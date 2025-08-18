@@ -1,0 +1,18 @@
+.toolbar {
+  align-items: center;
+}
+
+.routed-content {
+  background-color: lightblue;
+}
+
+.sidenav-title {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+
+.sidenav-container {
+  height: 100%;
+  width: 100%;
+}
