@@ -1,0 +1,17 @@
+.dialog {
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    align-items: center;
+    justify-items: center;
+}
+
+.content {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    align-items: center;
+    flex: 1;
+}

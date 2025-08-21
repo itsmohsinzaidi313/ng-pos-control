@@ -1,18 +1,14 @@
-.toolbar {
-  align-items: center;
+.sidenav-container {
+  height: 100vh;
 }
 
 .routed-content {
-  background-color: lightblue;
+  padding: 16px;
+  overflow-y: auto;
 }
 
-.sidenav-title {
-  display: flex;
-  flex-direction: row;
-  gap: 5px;
-}
-
-.sidenav-container {
-  height: 100%;
-  width: 100%;
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }

@@ -3,7 +3,9 @@
     <app-sidenav-content />
   </mat-sidenav>
   <mat-sidenav-content>
-    <app-toolbar (menuClicked$)="drawer.toggle()" />
-    <router-outlet class="routed-content" />
+    <app-toolbar (menuClicked$)="drawer.toggle()" class="toolbar" />
+    <div class="routed-content">
+      <router-outlet />
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

@@ -1,0 +1,24 @@
+<div class="main-content">
+    @if(loading) {
+    <div class="spinner-div">
+        <mat-spinner></mat-spinner>
+    </div>
+    }
+    @else {
+    <div>
+        <mat-list>
+            @for (restaurant of restaurants; track $index) {
+            <mat-list-item>
+                <div matListItemTitle>{{restaurant.Name}}</div>
+                <div matListItemLine>Branches: {{restaurant.Branches?.length ?? 0}} - Users: {{restaurant.Users?.length
+                    ?? 0}}</div>
+            </mat-list-item>
+            } @empty {
+            <mat-list-item>
+                <div matListItemTitle>Empty</div>
+            </mat-list-item>
+            }
+        </mat-list>
+    </div>
+    }
+</div>
