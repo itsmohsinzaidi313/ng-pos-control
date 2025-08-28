@@ -8,18 +8,25 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { LoginFailureDialog } from '../../components/login-failure-dialog/login-failure-dialog';
-import { catchError, of } from 'rxjs';
+import { catchError, Observable, of } from 'rxjs';
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { AsyncPipe } from '@angular/common';
+import { MatSnackBar, MatSnackBarConfig, MatSnackBarModule } from '@angular/material/snack-bar';
+import { HttpErrorResponse } from '@angular/common/http';
+import { LoadingSpinner } from "../../components/loading-spinner/loading-spinner";
 
 @Component({
   selector: 'app-login',
-  imports: [MatCardModule, MatFormFieldModule, MatInputModule, MatButton, ReactiveFormsModule],
+  imports: [MatCardModule, MatFormFieldModule, MatInputModule, MatButton, ReactiveFormsModule, MatProgressSpinnerModule, AsyncPipe, MatSnackBarModule, LoadingSpinner],
   templateUrl: './login.html',
   styleUrl: './login.scss'
 })
 
 export class Login {
   loginForm: FormGroup;
+  loading$: Observable<boolean> = of(false);
   private dialog = inject(MatDialog);
+  private snackbar = inject(MatSnackBar);
   constructor(private service: ApiService, private fb: FormBuilder, private router: Router,) {
     this.loginForm = this.fb.group({
       username: ['app@ygen', [Validators.required]],
@@ -30,14 +37,22 @@ export class Login {
   onSubmited(): void {
     const username = this.loginForm.value.username;
     const password = this.loginForm.value.password;
+    this.loading$ = of(true);
     this.service.login(username, password).pipe(
       catchError((err => {
+        this.loading$ = of(false);
         this.dialog.open(LoginFailureDialog);
+        if (err instanceof HttpErrorResponse) {
+          let e = err as HttpErrorResponse;
+          let o =this.snackbar.open(e.message, 'Dismiss');
+        }
         return of(null);
       }))
     ).subscribe(e => {
-      if (e)
-        this.router.navigateByUrl('home');
+      if (e) {
+        this.loading$ = of(false);
+        this.router.navigateByUrl('restaurants');
+      }
     });
   }
 }

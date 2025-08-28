@@ -1,0 +1,17 @@
+<h4>{{restaurant}}</h4>
+@if(!(branches$ | async)) {
+<app-loading-spinner />
+}
+@else {
+<mat-list>
+    @for (branch of branches$ | async; track $index) {
+    <div class="list-item">
+        <mat-list-item matRipple class="hoverable-list-item" [routerLink]="['/branch', branch.UniqueId]">
+            <div matListItemTitle>{{branch.Name}}</div>
+            <div matListItemLine>Systems: ({{branch.EnabledSystems}}/{{branch.TotalSystems}}) - Notifications
+                {{branch.TotalNotifications}}</div>
+        </mat-list-item>
+    </div>
+    }
+</mat-list>
+}

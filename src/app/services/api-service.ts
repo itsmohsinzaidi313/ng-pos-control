@@ -1,10 +1,12 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { v4 as uuidv4 } from 'uuid';
 import * as CryptoJS from 'crypto-js';
 import { LoginResponse } from '../models/login-response';
 import { Restaurant } from '../models/restaurant';
-import { map, Observable, of, switchMap } from 'rxjs';
+import { catchError, map, Observable, of, switchMap, throwError } from 'rxjs';
+import { Branch } from '../models/branch';
+import { System } from 'typescript';
 
 @Injectable({
   providedIn: 'root',
@@ -15,9 +17,20 @@ export class ApiService {
 
   constructor(private client: HttpClient) { }
 
-  login(username: string, password: string): Observable<boolean> {
-    var cryptUsername = CryptoJS.MD5(username).toString();
-    var cryptPassword = CryptoJS.MD5(password).toString();
+  private getUrl(path: string): string {
+    return `${this.BASEURL}${path}`;
+  }
+
+  login(username?: string, password?: string): Observable<boolean> {
+    let cryptUsername: string = '';
+    let cryptPassword: string = '';
+    if (username === '' && password === '') {
+      cryptUsername = CryptoJS.MD5(username).toString();
+      cryptPassword = CryptoJS.MD5(password).toString();
+    } else {
+      cryptUsername = localStorage.getItem('username')!;
+      cryptPassword = localStorage.getItem('password')!;
+    }
     var requestBody = {
       Username: cryptUsername,
       Passphrase: cryptPassword,
@@ -25,46 +38,47 @@ export class ApiService {
     };
     var url = this.getUrl('Security/AppAuth');
 
-    return this.client.post<LoginResponse>(url, requestBody, { headers: { 'content-type': 'application/json' }, observe: 'response' })
+    return this.client.post<LoginResponse>(url, requestBody, { observe: 'response' })
       .pipe(
-        map((response, _) => {
+        switchMap((response, index) => {
           if (response.ok) {
             var body = response.body!;
-
             localStorage.setItem('token', body.token);
             localStorage.setItem('username', cryptUsername);
             localStorage.setItem('password', cryptPassword);
-            return true;
           }
-          return false
-        })
+          return of(response);
+        }),
+        map((value) => value.ok)
       );
   }
 
   updateToken(): Observable<boolean> {
-    const username = localStorage.getItem('username');
-    const password = localStorage.getItem('password');
-    if (username && password) {
-
-      return this.login(username, password);
-    }
-    throw new Error("Invalid username or password");
+    return this.login();
   }
 
   getRestaurants(): Observable<Restaurant[]> {
-    const token = localStorage.getItem('token');
-    var headers = {
-      ContentType: 'application/json',
-      Authorization: `Bearer ${token}`,
-    }
-    return this.client.get<Restaurant[]>(this.getUrl('Registration/RegistrationRecords'), { headers: headers }).pipe(
-      switchMap(e => {
-        return of(e);
-      })
-    );
+    return this.client.get<Restaurant[]>(this.getUrl('Registration/Restaurants'));
   }
 
-  private getUrl(path: string): string {
-    return `${this.BASEURL}${path}`;
+  getBranches(uniqueId: string): Observable<Branch[]> {
+    const params = new HttpParams()
+      .set('restaurantId', uniqueId);
+    return this.client.get<Branch[]>(this.getUrl('Registration/Branch'), { params: params });
+  }
+
+  getSystems(uniqueId: string): Observable<System[]> {
+    const params = new HttpParams()
+      .set('branchId', uniqueId);
+    return this.client.get<System[]>(this.getUrl('Systems'), {
+      params
+    });
+  }
+
+  onError(err: any): Observable<any> {
+    if (err instanceof HttpErrorResponse && err.status === 401) {
+      this.updateToken().pipe(switchMap((value, index) => of(value)));
+    }
+    return throwError(() => err);
   }
 }

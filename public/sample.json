@@ -1,0 +1,23 @@
+{
+  "Name": "ZAMEER_ANSARI",
+  "UniqueId": "EC7602C0-AB90-11EC-8FF8-3F35552382AA",
+  "Branches": [
+    {
+      "Name": "ABABEEL_CAFE",
+      "Expiry": "2025-10-10T00:00:00",
+      "UniqueId": "A09598F9-D895-4744-B8A6-B9E61A07A198",
+      "Enabled": true,
+      "Debugs": [
+        { "SystemId": "160D3528-FADA-11E0-BBDA-2B73C2833CD9", "Enabled": true }
+      ]
+    }
+  ],
+  "Users": [
+    {
+      "Username": "fuelup",
+      "Devices": [
+        { "DeviceId": "93196A40-8D3A-11EE-9BCF-6B1D89824EF0", "Enabled": true }
+      ]
+    }
+  ]
+}

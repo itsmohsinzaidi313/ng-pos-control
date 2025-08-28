@@ -1,5 +1,11 @@
+@use '@angular/material' as mat;
 .toolbar {
-    position: sticky;
+    @include mat.elevation(4);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
 }
 
 .sidenav-title {

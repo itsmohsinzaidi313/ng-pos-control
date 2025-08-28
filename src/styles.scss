@@ -6,16 +6,12 @@
 @use '@angular/material' as mat;
 
 html {
-  @include mat.theme(
-    (
-      color: (
-        primary: mat.$cyan-palette,
+  @include mat.theme((color: (primary: mat.$cyan-palette,
         tertiary: mat.$orange-palette,
       ),
       typography: Roboto,
       density: 0,
-    )
-  );
+    ));
 }
 
 body {
@@ -34,12 +30,14 @@ body {
   // Reset the user agent margin.
   margin: 0;
 }
+
 /* You can add global styles to this file, and also import other style files */
 
 html,
 body {
   height: 100%;
 }
+
 body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
@@ -48,4 +46,15 @@ body {
 .size-inherit {
   width: inherit;
   height: inherit;
+}
+
+
+
+.hoverable-list-item {
+  transition: background-color 0.2s ease-in-out;
+
+  &:hover {
+    background-color: #f0f0f0;
+    cursor: pointer;
+  }
 }
