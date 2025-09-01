@@ -1,4 +1,4 @@
 export interface Software {
-    SystemId: string;
+    UniqueId: string;
     Enabled: boolean;
 }

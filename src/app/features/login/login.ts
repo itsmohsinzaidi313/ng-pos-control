@@ -6,14 +6,13 @@ import { MatInputModule } from '@angular/material/input';
 import { ApiService } from '../../services/api-service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
-import { LoginFailureDialog } from '../../components/login-failure-dialog/login-failure-dialog';
 import { catchError, Observable, of } from 'rxjs';
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { AsyncPipe } from '@angular/common';
 import { MatSnackBar, MatSnackBarConfig, MatSnackBarModule } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
 import { LoadingSpinner } from "../../components/loading-spinner/loading-spinner";
+import * as CryptoJS from 'crypto-js';
 
 @Component({
   selector: 'app-login',
@@ -25,7 +24,6 @@ import { LoadingSpinner } from "../../components/loading-spinner/loading-spinner
 export class Login {
   loginForm: FormGroup;
   loading$: Observable<boolean> = of(false);
-  private dialog = inject(MatDialog);
   private snackbar = inject(MatSnackBar);
   constructor(private service: ApiService, private fb: FormBuilder, private router: Router,) {
     this.loginForm = this.fb.group({
@@ -38,13 +36,15 @@ export class Login {
     const username = this.loginForm.value.username;
     const password = this.loginForm.value.password;
     this.loading$ = of(true);
-    this.service.login(username, password).pipe(
+
+    const cryptUsername = CryptoJS.MD5(username).toString();
+    const cryptPassword = CryptoJS.MD5(password).toString();
+    this.service.login(cryptUsername, cryptPassword).pipe(
       catchError((err => {
         this.loading$ = of(false);
-        this.dialog.open(LoginFailureDialog);
         if (err instanceof HttpErrorResponse) {
           let e = err as HttpErrorResponse;
-          let o =this.snackbar.open(e.message, 'Dismiss');
+          this.snackbar.open(e.message, 'Dismiss');
         }
         return of(null);
       }))

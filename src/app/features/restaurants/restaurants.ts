@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, computed, OnInit, signal } from '@angular/core';
 import { Restaurant } from '../../models/restaurant';
 import { ApiService } from '../../services/api-service';
 import { Observable } from 'rxjs';
@@ -16,16 +16,16 @@ import { LoadingSpinner } from "../../components/loading-spinner/loading-spinner
   styleUrl: './restaurants.scss'
 })
 export class Restaurants {
+  value$ = signal(0);
   restaurants$?: Observable<Restaurant[]>;
 
   constructor(private service: ApiService) { }
 
   ngOnInit(): void {
-    try {
-      this.restaurants$ = this.service.getRestaurants();
-    } catch (err) {
-      this.service.updateToken();
-      console.log(err);
-    }
+    this.restaurants$ = this.service.getRestaurants();
+  }
+
+  increment(): void {
+    this.value$.update((v) => v + 1);
   }
 }

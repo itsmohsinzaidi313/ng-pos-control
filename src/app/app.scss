@@ -1,9 +1,18 @@
-.sidenav-container {
-  height: 100vh;
+@use '@angular/material' as mat;
+
+app-toolbar {
+  @include mat.elevation(4);
+  z-index: 2;
+  position: fixed;
+  display: block;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 
 .routed-content {
-  margin-top: 42px;
-  padding: 16px;
+  z-index: 1;
+  margin-top: 64px;
+  height: calc(100vh - 64px);
   overflow-y: auto;
 }

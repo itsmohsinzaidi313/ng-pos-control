@@ -6,7 +6,7 @@
 <mat-list>
     @for (branch of branches$ | async; track $index) {
     <div class="list-item">
-        <mat-list-item matRipple class="hoverable-list-item" [routerLink]="['/branch', branch.UniqueId]">
+        <mat-list-item matRipple class="hoverable-list-item" [routerLink]="['/branch']" [state]="{ branch: branch}">
             <div matListItemTitle>{{branch.Name}}</div>
             <div matListItemLine>Systems: ({{branch.EnabledSystems}}/{{branch.TotalSystems}}) - Notifications
                 {{branch.TotalNotifications}}</div>

@@ -29,7 +29,7 @@ export class Branches {
             return this.service.getBranches(uniqueId).pipe(
               catchError((err) => {
                 if (err instanceof HttpErrorResponse && err.status == 401) {
-                  this.service.updateToken();
+                  // this.service.updateToken();
                   return of([]);
                 }
                 return throwError(() => err);

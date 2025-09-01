@@ -1,1 +1,15 @@
-<p>branch works!</p>
+<h4>{{branch?.Name}}</h4>
+@if (!systems$) {
+<app-loading-spinner />
+}
+@else {
+<mat-list>
+    @for (item of systems$ | async; track $index) {
+    <div class="list-item">
+        <mat-list-item class="hoverable-list-item">
+            <div matListItemTitle>{{item.UniqueId}}</div>
+        </mat-list-item>
+    </div>
+    }
+</mat-list>
+}
