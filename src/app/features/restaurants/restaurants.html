@@ -2,9 +2,6 @@
 <app-loading-spinner />
 }
 @else {
-<div class="search-bar">
-    <input matInput [formControl]="formControl" placeholder="Search" />
-</div>
 <mat-list>
     @for (restaurant of filteredItems$ | async ; track $index) {
     <div class="list-item">

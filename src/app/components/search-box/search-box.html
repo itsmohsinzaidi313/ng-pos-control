@@ -1,0 +1,11 @@
+<mat-form-field class="search-box">
+    <mat-chip-grid #chipGrid aria-label="Tag selection">
+        @for (tag of tags; track $index) {
+        <mat-chip-row>
+            {{tag}}
+            <button matChipRemove></button>
+        </mat-chip-row>
+        }
+        <input matInput [formControl]="formController" placeholder="Search" type="text" [matChipInputFor]="chipGrid" />
+    </mat-chip-grid>
+</mat-form-field>

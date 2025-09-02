@@ -19,7 +19,7 @@ import { Toolbar } from "./components/toolbar/toolbar";
     MatListModule,
     SidenavContent,
     Toolbar
-],
+  ],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

@@ -4,9 +4,9 @@
 }
 @else {
 <mat-list>
-    @for (branch of branches$ | async; track $index) {
+    @for (branch of filteredBranches$ | async; track $index) {
     <div class="list-item">
-        <mat-list-item matRipple class="hoverable-list-item" [routerLink]="['/branch']" [state]="{ branch: branch}">
+        <mat-list-item matRipple class="hoverable-list-item" [routerLink]="['/systems']" [state]="{ branch: branch}">
             <div matListItemTitle>{{branch.Name}}</div>
             <div matListItemLine>Systems: ({{branch.EnabledSystems}}/{{branch.TotalSystems}}) - Notifications
                 {{branch.TotalNotifications}}</div>

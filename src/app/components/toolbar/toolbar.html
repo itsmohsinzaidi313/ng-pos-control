@@ -1,8 +1,11 @@
-<mat-toolbar>
-  <div class="sidenav-title">
-    <button type="button" matButton (click)="onMenuClicked()">
-      <mat-icon matListItemIcon>menu</mat-icon>
-      <div matListItemTitle>POS Control</div>
-    </button>
+<mat-toolbar class="toolbar">
+  <div class="sidenav-items">
+    <div class="sidenav-title">
+      <button type="button" matButton (click)="onMenuClicked()">
+        <mat-icon matListItemIcon class="icon-title">menu</mat-icon>
+        <div matListItemTitle class="icon-title">POS Control</div>
+      </button>
+    </div>
+    <app-search-box />
   </div>
 </mat-toolbar>

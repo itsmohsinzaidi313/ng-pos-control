@@ -1,5 +1,20 @@
-
-
 .sidenav-title {
     gap: 5px;
+}
+
+.sidenav-items {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+}
+
+.toolbar {
+    background-color: var(--mat-sys-primary);
+    color: var(--mat-sys-on-primary);
+}
+
+.icon-title {
+    background-color: var(--mat-sys-primary);
+    color: var(--mat-sys-on-primary);
 }

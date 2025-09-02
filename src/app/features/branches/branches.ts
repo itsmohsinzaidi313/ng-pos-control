@@ -8,6 +8,7 @@ import { catchError, map, Observable, of, switchMap, throwError } from 'rxjs';
 import { Branch } from '../../models/branch';
 import { LoadingSpinner } from "../../components/loading-spinner/loading-spinner";
 import { HttpErrorResponse } from '@angular/common/http';
+import { SearchService } from '../../services/search-service';
 
 @Component({
   selector: 'app-branches',
@@ -16,17 +17,24 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrl: './branches.scss'
 })
 export class Branches {
-  constructor(private service: ApiService, private route: ActivatedRoute) { }
   restaurant?: string;
   branches$?: Observable<Branch[] | null>;
+  filteredBranches$?: Observable<Branch[] | null>;
+  constructor(private searchService: SearchService, private apiService: ApiService, private route: ActivatedRoute) {
+    this.searchService.search$.subscribe(search =>
+      this.filteredBranches$ = this.branches$?.pipe(map(b => {
+        return (b ?? []).filter(val => val.Name.toLowerCase().includes(search.toLowerCase()));
+      }))
+    );
+  }
 
   ngOnInit(): void {
     try {
-      this.branches$ = this.route.paramMap.pipe(
+      let result = this.route.paramMap.pipe(
         switchMap((params, index) => {
           let uniqueId = params.get('id');
           if (uniqueId) {
-            return this.service.getBranches(uniqueId).pipe(
+            return this.apiService.getBranches(uniqueId).pipe(
               catchError((err) => {
                 if (err instanceof HttpErrorResponse && err.status == 401) {
                   // this.service.updateToken();
@@ -43,6 +51,8 @@ export class Branches {
           return of(null);
         })
       );
+      this.branches$ = result;
+      this.filteredBranches$ = result;
     } catch (error) {
 
     }

@@ -1,7 +1,5 @@
-@use '@angular/material' as mat;
-
 app-toolbar {
-  @include mat.elevation(4);
+  box-shadow: var(--mat-sys-level4);
   z-index: 2;
   position: fixed;
   display: block;
