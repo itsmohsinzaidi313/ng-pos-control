@@ -2,8 +2,11 @@
 <app-loading-spinner />
 }
 @else {
+<div class="search-bar">
+    <input matInput [formControl]="formControl" placeholder="Search" />
+</div>
 <mat-list>
-    @for (restaurant of restaurants$ | async ; track $index) {
+    @for (restaurant of filteredItems$ | async ; track $index) {
     <div class="list-item">
         <mat-list-item matRipple class="hoverable-list-item" [routerLink]="['/branches', restaurant.UniqueId]">
             <div matListItemTitle>{{restaurant.Name}}</div>
