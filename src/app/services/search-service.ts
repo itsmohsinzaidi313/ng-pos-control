@@ -5,13 +5,24 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class SearchService {
+  private available = new BehaviorSubject<boolean>(false);
+  available$ = this.available.asObservable();
+  
   private search = new BehaviorSubject<string>('');
   search$ = this.search.asObservable();
-  
+
   enableTags = new BehaviorSubject<boolean>(false);
   enableTags$ = this.enableTags.asObservable();
 
   setSearch(value: string): void {
     this.search.next(value);
+  }
+
+  enable():void {
+    this.available.next(true);
+  }
+
+  disable(): void {
+    this.available.next(false);
   }
 }

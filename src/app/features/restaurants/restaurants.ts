@@ -24,6 +24,7 @@ export class Restaurants {
   filteredItems$?: Observable<Restaurant[]>;
 
   constructor(private searchService: SearchService, private apiService: ApiService) {
+    this.searchService.enable();
     this.searchService.search$.subscribe((search) => {
       this.filteredItems$ = this.restaurants$?.pipe(map((r) => {
         return r.filter((value2, index) => {
