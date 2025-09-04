@@ -105,7 +105,7 @@ export class ApiService {
   updateBranchNotification(uniqueId: string, notification: ClientNotification, checked: boolean): Observable<boolean> {
     const url = `${this.REGISTRATION_URL}BranchNotification`;
     return this.client.put(url, {
-      Id: notification.Id,
+      Id: notification.NotificationId,
       Level: notification.Level,
       Title: notification.Title,
       Message: notification.Body,

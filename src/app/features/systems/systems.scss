@@ -1,5 +1,5 @@
 .list-item-container {
-  max-width: 30%;
+  max-width: 40%;
 }
 
 .title {
@@ -16,4 +16,11 @@
 
 .notifications-list-title {
   font: var(--mat-sys-title-medium);
+}
+
+.validity-input-field {
+  padding: 5px;
+  border: 2px solid var(--mat-sys-primary);
+  border-radius: 20px;
+  font: var(--mat-sys-body-medium)
 }

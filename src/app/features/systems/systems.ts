@@ -1,8 +1,7 @@
 import { Component, signal } from '@angular/core';
-import { catchError, map, of, throwError } from 'rxjs';
+import { catchError, of } from 'rxjs';
 import { ApiService } from '../../services/api-service';
 import { MatListModule } from "@angular/material/list";
-import { AsyncPipe } from '@angular/common';
 import { Software } from '../../models/software';
 import { Branch as BranchObj } from '../../models/branch';
 import { LoadingSpinner } from "../../components/loading-spinner/loading-spinner";
@@ -11,11 +10,15 @@ import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/sl
 import { MatIconModule } from '@angular/material/icon';
 import { ClientNotification } from '../../models/client-notification';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { NotificationService } from '../../services/notification-service';
+import { DatePipe } from '@angular/common';
+import { MatIconButton } from '@angular/material/button';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 
 @Component({
   selector: 'app-systems',
-  imports: [MatListModule, AsyncPipe, LoadingSpinner, MatSlideToggleModule, MatIconModule, MatExpansionModule],
+  imports: [MatListModule, LoadingSpinner, MatSlideToggleModule, MatIconModule, MatExpansionModule, DatePipe, MatIconButton, MatDatepickerModule],
   templateUrl: './systems.html',
   styleUrl: './systems.scss'
 })
@@ -31,7 +34,7 @@ export class Systems {
   $loadingSoftwares = signal(true);
   $loadingNotifications = signal(true);
 
-  constructor(private searchService: SearchService, private apiService: ApiService) {
+  constructor(private searchService: SearchService, private apiService: ApiService, private notificationService: NotificationService) {
     this.searchService.$search.subscribe(search => {
       const result2 = this.$systems().filter(val => val.UniqueId.toLowerCase().includes(search.toLowerCase()));
       this.$filteredSystems.set(result2);
@@ -93,7 +96,8 @@ export class Systems {
     $toggleChanged.source.checked = !$toggleChanged.source.checked;
     this.apiService.updateBranchNotification(this.branch!.UniqueId, notification, $toggleChanged.checked)
       .pipe(catchError(err => {
-        console.log(err)
+        console.log(err);
+        this.notificationService.showMessage(err.message);
         return of(false)
       }))
       .subscribe(response1 => {
@@ -105,7 +109,7 @@ export class Systems {
             }))
             .subscribe(response => {
               if (response.length >= 1) {
-                const value = response.filter(x => x.Id == notification.Id)
+                const value = response.filter(x => x.NotificationId == notification.NotificationId)
                 $toggleChanged.source.checked = value[0].Enabled;
               }
             });

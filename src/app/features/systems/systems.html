@@ -10,8 +10,8 @@
         <mat-list-item class="hoverable-list-item list-item">
             <span matListItemTitle>{{item.UniqueId}}</span>
             <div matListItemMeta>
-                <mat-slide-toggle [checked]="item.Enabled" (change)="onSoftwareToggle($event, item)"
-                    style="z-index: 3;"></mat-slide-toggle>
+                <mat-slide-toggle [checked]="item.Enabled" (change)="onSoftwareToggle($event, item)">
+                </mat-slide-toggle>
             </div>
         </mat-list-item>
         }
@@ -24,13 +24,23 @@
     <span class="notifications-list-title">NOTIFICATIONS</span>
     <mat-accordion multi="true">
         @for (item of $filteredNotifications(); track $index) {
-        <mat-expansion-panel hideToggle>
+        <mat-expansion-panel hideToggle expanded="true">
             <mat-expansion-panel-header>
                 <mat-panel-title>{{item.Title}}</mat-panel-title>
                 <mat-slide-toggle [checked]="item.Enabled" (click)="$event.stopPropagation()"
                     (change)="onNotificationToggle($event, item)"></mat-slide-toggle>
             </mat-expansion-panel-header>
             @if(item.Body.length >= 1) {
+            <mat-list-item>
+                <div matListItemTitle>Validity</div>
+                <div matListItemLine>{{item.Validity | date:'yyyy-MM-dd hh:mm aa'}}
+                </div>
+                <div matListItemMeta>
+                    <button matIconButton type="button">
+                        <mat-icon>calendar_month</mat-icon>
+                    </button>
+                </div>
+            </mat-list-item>
             <p>{{item.Body}}</p>
             }
             @else {

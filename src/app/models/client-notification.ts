@@ -1,5 +1,5 @@
 export interface ClientNotification {
-    Id: number;
+    NotificationId: number;
     Level: number;
     Title: string;
     Body: string;
