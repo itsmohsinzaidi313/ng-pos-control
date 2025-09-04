@@ -2,16 +2,14 @@
 <app-loading-spinner />
 }
 @else {
-<mat-list>
+<mat-list class="list">
     @for (restaurant of filteredItems$ | async ; track $index) {
     <div class="list-item">
         <mat-list-item matRipple class="hoverable-list-item" [routerLink]="['/branches', restaurant.UniqueId]">
-            <div matListItemTitle>{{restaurant.Name}}</div>
+            <div matListItemTitle class="text">{{restaurant.Name}}</div>
             <div matListItemLine>Branches: {{restaurant.TotalBranches}} - Users: {{restaurant.TotalUsers}}</div>
         </mat-list-item>
     </div>
-    } @empty {
-    <span></span>
     }
 </mat-list>
 }

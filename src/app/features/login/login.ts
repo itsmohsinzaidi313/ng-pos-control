@@ -53,6 +53,7 @@ export class Login {
     ).subscribe(e => {
       if (e) {
         this.loading$ = of(false);
+        this.searchService.enable();
         this.router.navigateByUrl('restaurants');
       }
     });

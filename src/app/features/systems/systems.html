@@ -1,15 +1,43 @@
-<span class="title">{{branch?.Name}}</span>
-@if (!systems$) {
-<app-loading-spinner />
-}
-@else {
-<mat-list>
-    @for (item of filteredSystems | async; track $index) {
-    <div class="list-item">
-        <mat-list-item class="hoverable-list-item">
-            <div matListItemTitle>{{item.UniqueId}}</div>
-        </mat-list-item>
-    </div>
+<div class="component list-item-container">
+    <span class="title">{{title()}}</span>
+    @if (!$loadingSoftwares()) {
+    <app-loading-spinner />
     }
-</mat-list>
-}
+    @else {
+    <mat-list>
+        <span class="systems-list-title">SYSTEMS</span>
+        @for (item of $filteredSystems(); track $index) {
+        <mat-list-item class="hoverable-list-item list-item">
+            <span matListItemTitle>{{item.UniqueId}}</span>
+            <div matListItemMeta>
+                <mat-slide-toggle [checked]="item.Enabled" (change)="onSoftwareToggle($event, item)"
+                    style="z-index: 3;"></mat-slide-toggle>
+            </div>
+        </mat-list-item>
+        }
+    </mat-list>
+    }
+    @if (!($loadingNotifications())) {
+    <app-loading-spinner />
+    }
+    @else {
+    <span class="notifications-list-title">NOTIFICATIONS</span>
+    <mat-accordion multi="true">
+        @for (item of $filteredNotifications(); track $index) {
+        <mat-expansion-panel hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title>{{item.Title}}</mat-panel-title>
+                <mat-slide-toggle [checked]="item.Enabled" (click)="$event.stopPropagation()"
+                    (change)="onNotificationToggle($event, item)"></mat-slide-toggle>
+            </mat-expansion-panel-header>
+            @if(item.Body.length >= 1) {
+            <p>{{item.Body}}</p>
+            }
+            @else {
+            <p>No Discription</p>
+            }
+        </mat-expansion-panel>
+        }
+    </mat-accordion>
+    }
+</div>

@@ -1,4 +1,4 @@
-import { Component, computed, OnInit, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { Restaurant } from '../../models/restaurant';
 import { ApiService } from '../../services/api-service';
 import { map, Observable, of } from 'rxjs';
@@ -24,7 +24,7 @@ export class Restaurants {
   filteredItems$?: Observable<Restaurant[]>;
 
   constructor(private searchService: SearchService, private apiService: ApiService) {
-    this.searchService.search$.subscribe((search) => {
+    this.searchService.$search.subscribe((search) => {
       this.filteredItems$ = this.restaurants$?.pipe(map((r) => {
         return r.filter((value2, index) => {
           return value2.Name.toLowerCase().includes(search.toLowerCase())

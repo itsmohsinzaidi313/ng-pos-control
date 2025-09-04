@@ -1,15 +1,19 @@
-.list-item {
-  width: 40%;
+.list-item-container {
+  max-width: 30%;
 }
 
 .title {
-  padding-left: 24px;
   font: var(--mat-sys-title-large);
-  &:focus {
-    border: 2px solid var(--mat-sys-primary);
-  }
+}
 
-  &:active {
-    border: 2px solid var(--mat-sys-primary);
-  }
+.systems-list-title {
+  font: var(--mat-sys-title-medium)
+}
+
+.component {
+  padding-left: 24px;
+}
+
+.notifications-list-title {
+  font: var(--mat-sys-title-medium);
 }

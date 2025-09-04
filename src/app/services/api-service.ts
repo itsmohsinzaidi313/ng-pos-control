@@ -1,10 +1,12 @@
-import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LoginResponse } from '../models/login-response';
 import { Restaurant } from '../models/restaurant';
-import { map, Observable, of, switchMap, throwError } from 'rxjs';
+import { map, Observable, of, switchMap } from 'rxjs';
 import { Branch } from '../models/branch';
 import { Software } from '../models/software';
+import { ClientNotification } from '../models/client-notification';
+import { validate } from 'uuid';
 
 @Injectable({
   providedIn: 'root',
@@ -58,24 +60,62 @@ export class ApiService {
     return this.client.get<Branch[]>(url, { params: params });
   }
 
-  getSystems(uniqueId: string): Observable<Software[]> {
+  getSoftwares(uniqueId: string): Observable<Software[]> {
     const params = new HttpParams()
       .set('branchId', uniqueId);
     const url = `${this.REGISTRATION_URL}Softwares`
     return this.client.get<Software[]>(url, { params: params });
   }
 
-  getBranchNotifications(uniqueId: string): Observable<Notification[]> {
+  getSoftwaresTest(uniqueId: string): Observable<Software> {
+    const params = new HttpParams()
+      .set('branchId', uniqueId);
+    const url = `${this.REGISTRATION_URL}Softwares`
+    return this.client.get<Software>(url, { params: params });
+  }
+
+  getBranchNotifications(uniqueId: string): Observable<ClientNotification[]> {
     const params = new HttpParams()
       .set('branchId', uniqueId);
     const url = `${this.REGISTRATION_URL}BranchNotifications`
-    return this.client.get<Notification[]>(url, { params: params });
+    return this.client.get<ClientNotification[]>(url, { params: params });
   }
 
-  getUserNotifications(uniqueId: string): Observable<Notification[]> {
+  getUserNotifications(uniqueId: string): Observable<ClientNotification[]> {
     const params = new HttpParams()
       .set('userId', uniqueId);
     const url = `${this.REGISTRATION_URL}UserNotifications`
-    return this.client.get<Notification[]>(url, { params: params });
+    return this.client.get<ClientNotification[]>(url, { params: params });
+  }
+
+  updateSoftware(uniqueId: string, value: boolean): Observable<boolean> {
+    const url = `${this.REGISTRATION_URL}Softwares`;
+    return this.client.put(url, null, {
+      params: {
+        'softwareId': uniqueId,
+        'enabled': value
+      },
+      observe: 'response'
+    }).pipe(map(response => {
+      return response.ok;
+    }));
+  }
+
+
+  updateBranchNotification(uniqueId: string, notification: ClientNotification, checked: boolean): Observable<boolean> {
+    const url = `${this.REGISTRATION_URL}BranchNotification`;
+    return this.client.put(url, {
+      Id: notification.Id,
+      Level: notification.Level,
+      Title: notification.Title,
+      Message: notification.Body,
+      Enabled: notification.Enabled,
+      Validate: notification.Validity,
+      Uids: [uniqueId]
+    }, {
+      observe: 'response'
+    }).pipe(map(response => {
+      return response.ok;
+    }));
   }
 }

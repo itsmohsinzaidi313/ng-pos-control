@@ -21,7 +21,7 @@ export class Branches {
   branches$?: Observable<Branch[] | null>;
   filteredBranches$?: Observable<Branch[] | null>;
   constructor(private searchService: SearchService, private apiService: ApiService, private route: ActivatedRoute) {
-    this.searchService.search$.subscribe(search =>
+    this.searchService.$search.subscribe(search =>
       this.filteredBranches$ = this.branches$?.pipe(map(b => {
         return (b ?? []).filter(val => val.Name.toLowerCase().includes(search.toLowerCase()));
       }))
