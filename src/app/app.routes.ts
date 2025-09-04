@@ -8,5 +8,5 @@ export const routes: Routes = [
     { path: '', component: Login },
     { path: 'restaurants', component: Restaurants },
     { path: 'branches/:id', component: Branches },
-    { path: 'branch', component: Systems }
+    { path: 'systems', component: Systems }
 ];

@@ -13,6 +13,7 @@ import { MatSnackBar, MatSnackBarConfig, MatSnackBarModule } from '@angular/mate
 import { HttpErrorResponse } from '@angular/common/http';
 import { LoadingSpinner } from "../../components/loading-spinner/loading-spinner";
 import * as CryptoJS from 'crypto-js';
+import { SearchService } from '../../services/search-service';
 
 @Component({
   selector: 'app-login',
@@ -25,7 +26,8 @@ export class Login {
   loginForm: FormGroup;
   loading$: Observable<boolean> = of(false);
   private snackbar = inject(MatSnackBar);
-  constructor(private service: ApiService, private fb: FormBuilder, private router: Router,) {
+  constructor(private searchService: SearchService, private apiService: ApiService, private fb: FormBuilder, private router: Router,) {
+    this.searchService.disable();
     this.loginForm = this.fb.group({
       username: ['app@ygen', [Validators.required]],
       password: ['321', [Validators.required, Validators.minLength(3)]]
@@ -39,7 +41,7 @@ export class Login {
 
     const cryptUsername = CryptoJS.MD5(username).toString();
     const cryptPassword = CryptoJS.MD5(password).toString();
-    this.service.login(cryptUsername, cryptPassword).pipe(
+    this.apiService.login(cryptUsername, cryptPassword).pipe(
       catchError((err => {
         this.loading$ = of(false);
         if (err instanceof HttpErrorResponse) {

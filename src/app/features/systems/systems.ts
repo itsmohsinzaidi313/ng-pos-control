@@ -20,8 +20,10 @@ export class Systems {
   branch?: BranchObj;
   systems$?: Observable<Software[]>;
   filteredSystems?: Observable<Software[]>;
+  
   notifications$?: Observable<Notification[]>;
   filteredNotifications$?: Observable<Notification[]>;
+
   constructor(private searchService: SearchService, private apiService: ApiService, private router: Router) {
     this.searchService.search$.subscribe(search => {
       this.filteredSystems = this.systems$?.pipe(map(value => {

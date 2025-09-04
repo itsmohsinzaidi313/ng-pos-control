@@ -2,6 +2,14 @@
   width: 40%;
 }
 
-h4 {
+.title {
   padding-left: 24px;
+  font: var(--mat-sys-title-large);
+  &:focus {
+    border: 2px solid var(--mat-sys-primary);
+  }
+
+  &:active {
+    border: 2px solid var(--mat-sys-primary);
+  }
 }
