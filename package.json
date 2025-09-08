@@ -28,6 +28,7 @@
     "@angular/core": "^20.1.0",
     "@angular/forms": "^20.1.0",
     "@angular/material": "^20.1.6",
+    "@angular/material-luxon-adapter": "^20.1.6",
     "@angular/platform-browser": "^20.1.0",
     "@angular/router": "^20.1.0",
     "crypto-js": "^4.2.0",

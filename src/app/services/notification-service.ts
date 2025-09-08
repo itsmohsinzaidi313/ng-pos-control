@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { MatSnackBar, MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarConfig, MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +7,9 @@ import { MatSnackBar, MatSnackBarRef, TextOnlySnackBar } from '@angular/material
 export class NotificationService {
   private snackbar = inject(MatSnackBar);
 
-  showMessage(message: string): MatSnackBarRef<TextOnlySnackBar> {
-    return this.snackbar.open(message, 'Dismiss');
+  showMessage(message: string, duration?: number): MatSnackBarRef<TextOnlySnackBar> {
+    const config = new MatSnackBarConfig();
+    config.duration = duration;
+    return this.snackbar.open(message, duration === undefined ? 'Dismiss' : undefined, config);
   }
 }

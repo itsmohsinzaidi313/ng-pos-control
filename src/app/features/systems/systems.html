@@ -7,7 +7,12 @@
     <mat-list>
         <span class="systems-list-title">SYSTEMS</span>
         @for (item of $filteredSystems(); track $index) {
-        <mat-list-item class="hoverable-list-item list-item">
+        <mat-list-item class="hoverable-list-item ">
+            <div matListItemIcon style="display: flex; align-items: center; padding-right: 20px;">
+                <button matIconButton (click)="copyToClipboard(item.UniqueId)">
+                    <mat-icon>content_copy</mat-icon>
+                </button>
+            </div>
             <span matListItemTitle>{{item.UniqueId}}</span>
             <div matListItemMeta>
                 <mat-slide-toggle [checked]="item.Enabled" (change)="onSoftwareToggle($event, item)">
@@ -24,28 +29,32 @@
     <span class="notifications-list-title">NOTIFICATIONS</span>
     <mat-accordion multi="true">
         @for (item of $filteredNotifications(); track $index) {
-        <mat-expansion-panel hideToggle expanded="true">
+        <mat-expansion-panel hideToggle>
             <mat-expansion-panel-header>
                 <mat-panel-title>{{item.Title}}</mat-panel-title>
                 <mat-slide-toggle [checked]="item.Enabled" (click)="$event.stopPropagation()"
                     (change)="onNotificationToggle($event, item)"></mat-slide-toggle>
             </mat-expansion-panel-header>
-            @if(item.Body.length >= 1) {
-            <mat-list-item>
-                <div matListItemTitle>Validity</div>
-                <div matListItemLine>{{item.Validity | date:'yyyy-MM-dd hh:mm aa'}}
-                </div>
-                <div matListItemMeta>
-                    <button matIconButton type="button">
-                        <mat-icon>calendar_month</mat-icon>
-                    </button>
-                </div>
-            </mat-list-item>
+
+            <div class="datetime-field-container">
+                <mat-list-item>
+                    <div matListItemTitle>Validity</div>
+                    <div matListItemLine>
+                        <input [disabledInteractive]="true" class="date-input" matInput [matDatepicker]="datePicker"
+                            placeholder="{{item.Validity | date: 'dd-MM-yy'}}">
+
+                        <input [disabledInteractive]="true" [disabledInteractive] class="time-input" matInput
+                            [matTimepicker]="timePicker" placeholder="{{item.Validity | date: 'hh:mm aa'}}">
+                    </div>
+                </mat-list-item>
+                <mat-datepicker-toggle matIconSuffix [for]="datePicker">
+                </mat-datepicker-toggle>
+                <mat-datepicker #datePicker />
+
+                <mat-timepicker-toggle matIconSuffix [for]="timePicker" />
+                <mat-timepicker #timePicker />
+            </div>
             <p>{{item.Body}}</p>
-            }
-            @else {
-            <p>No Discription</p>
-            }
         </mat-expansion-panel>
         }
     </mat-accordion>

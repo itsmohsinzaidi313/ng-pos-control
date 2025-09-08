@@ -11,14 +11,18 @@ import { MatIconModule } from '@angular/material/icon';
 import { ClientNotification } from '../../models/client-notification';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { NotificationService } from '../../services/notification-service';
-import { DatePipe } from '@angular/common';
-import { MatIconButton } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatTimepickerModule } from '@angular/material/timepicker';
+import { DatePipe } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 
 @Component({
   selector: 'app-systems',
-  imports: [MatListModule, LoadingSpinner, MatSlideToggleModule, MatIconModule, MatExpansionModule, DatePipe, MatIconButton, MatDatepickerModule],
+  imports: [MatListModule, LoadingSpinner, MatSlideToggleModule, MatIconModule, MatExpansionModule, MatDatepickerModule, ReactiveFormsModule, MatFormFieldModule, MatTimepickerModule, DatePipe, MatInputModule, MatButtonModule],
   templateUrl: './systems.html',
   styleUrl: './systems.scss'
 })
@@ -33,6 +37,8 @@ export class Systems {
 
   $loadingSoftwares = signal(true);
   $loadingNotifications = signal(true);
+
+  formController = new FormControl('');
 
   constructor(private searchService: SearchService, private apiService: ApiService, private notificationService: NotificationService) {
     this.searchService.$search.subscribe(search => {
@@ -94,7 +100,16 @@ export class Systems {
 
   onNotificationToggle($toggleChanged: MatSlideToggleChange, notification: ClientNotification) {
     $toggleChanged.source.checked = !$toggleChanged.source.checked;
-    this.apiService.updateBranchNotification(this.branch!.UniqueId, notification, $toggleChanged.checked)
+
+    this.apiService.updateBranchNotification(this.branch!.UniqueId, {
+      notificationId: notification.NotificationId,
+      body: notification.Body,
+      title: notification.Title,
+      validity: notification.Validity,
+      deleted: notification.Deleted,
+      level: notification.Level,
+      enabled: $toggleChanged.checked
+    }, $toggleChanged.checked)
       .pipe(catchError(err => {
         console.log(err);
         this.notificationService.showMessage(err.message);
@@ -115,5 +130,10 @@ export class Systems {
             });
         }
       });
+  }
+
+  copyToClipboard(value: string): void {
+    navigator.clipboard.writeText(value);
+    this.notificationService.showMessage('Copied', 1000)
   }
 }
