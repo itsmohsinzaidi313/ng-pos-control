@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LoginResponse } from '../models/login-response';
 import { Restaurant } from '../models/restaurant';
-import { map, Observable, of, switchMap } from 'rxjs';
+import { map, Observable, of, switchMap, tap } from 'rxjs';
 import { Branch } from '../models/branch';
 import { Software } from '../models/software';
 import { ClientNotification } from '../models/client-notification';
@@ -64,14 +64,8 @@ export class ApiService {
     const params = new HttpParams()
       .set('branchId', uniqueId);
     const url = `${this.REGISTRATION_URL}Softwares`
-    return this.client.get<Software[]>(url, { params: params });
-  }
-
-  getSoftwaresTest(uniqueId: string): Observable<Software> {
-    const params = new HttpParams()
-      .set('branchId', uniqueId);
-    const url = `${this.REGISTRATION_URL}Softwares`
-    return this.client.get<Software>(url, { params: params });
+    return this.client.get<Software[]>(url, { params: params })
+      .pipe(tap(x => console.log(x.length)));
   }
 
   getBranchNotifications(uniqueId: string): Observable<ClientNotification[]> {
@@ -102,16 +96,16 @@ export class ApiService {
   }
 
 
-  updateBranchNotification(uniqueId: string, { notificationId, level, title, body, enabled, validity, deleted, }: { notificationId?: number, level?: number, title?: string, body?: string, enabled?: boolean, validity?: Date, deleted?: boolean }, checked: boolean): Observable<boolean> {
+  updateBranchNotification(uniqueId: string, notification: ClientNotification, { notificationId, level, title, body, enabled, validity, deleted, }: { notificationId?: number, level?: number, title?: string, body?: string, enabled?: boolean, validity?: Date, deleted?: boolean }): Observable<boolean> {
     const url = `${this.REGISTRATION_URL}BranchNotification`;
     return this.client.put(url, {
-      Id: notificationId,
-      Level: level,
-      Title: title,
-      Message: body,
-      Enabled: enabled,
-      Validity: validity,
-      Deleted: deleted,
+      Id: notificationId ?? notification.NotificationId,
+      Level: level ?? notification.Level,
+      Title: title ?? notification.Title,
+      Message: body ?? notification.Body,
+      Enabled: enabled ?? notification.Enabled,
+      Validity: validity ?? notification.Validity,
+      Deleted: deleted ?? notification.Deleted,
       Uids: [uniqueId]
     }, {
       observe: 'response'

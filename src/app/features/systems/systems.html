@@ -6,7 +6,7 @@
     @else {
     <mat-list>
         <span class="systems-list-title">SYSTEMS</span>
-        @for (item of $filteredSystems(); track $index) {
+        @for (item of $filteredSystems | async; track $index) {
         <mat-list-item class="hoverable-list-item ">
             <div matListItemIcon style="display: flex; align-items: center; padding-right: 20px;">
                 <button matIconButton (click)="copyToClipboard(item.UniqueId)">
@@ -28,14 +28,23 @@
     @else {
     <span class="notifications-list-title">NOTIFICATIONS</span>
     <mat-accordion multi="true">
-        @for (item of $filteredNotifications(); track $index) {
-        <mat-expansion-panel hideToggle>
+        @for (item of $filteredNotifications | async; track $index) {
+        <mat-expansion-panel hideToggle expanded="true">
             <mat-expansion-panel-header>
                 <mat-panel-title>{{item.Title}}</mat-panel-title>
-                <mat-slide-toggle [checked]="item.Enabled" (click)="$event.stopPropagation()"
-                    (change)="onNotificationToggle($event, item)"></mat-slide-toggle>
+                <mat-icon [ngStyle]="{'color': item.Enabled ? 'green' : 'red'}">{{item.Enabled ? 'check' :
+                    'close'}}</mat-icon>
             </mat-expansion-panel-header>
-
+            <div>
+                <mat-list-item>
+                    <div matListItemTitle>Enabled</div>
+                    <div matListItemMeta>
+                        <mat-slide-toggle [checked]="item.Enabled" (click)="$event.stopPropagation()"
+                            (change)="onNotificationToggle($event, item)"></mat-slide-toggle>
+                    </div>
+                </mat-list-item>
+            </div>
+            <mat-divider></mat-divider>
             <div class="datetime-field-container">
                 <mat-list-item>
                     <div matListItemTitle>Validity</div>
@@ -47,14 +56,25 @@
                             [matTimepicker]="timePicker" placeholder="{{item.Validity | date: 'hh:mm aa'}}">
                     </div>
                 </mat-list-item>
-                <mat-datepicker-toggle matIconSuffix [for]="datePicker">
-                </mat-datepicker-toggle>
-                <mat-datepicker #datePicker />
+                <div style="display: flex; align-items: center;">
+                    <mat-datepicker-toggle matIconSuffix [for]="datePicker">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #datePicker />
 
-                <mat-timepicker-toggle matIconSuffix [for]="timePicker" />
-                <mat-timepicker #timePicker />
+                    <mat-timepicker-toggle matIconSuffix [for]="timePicker" />
+                    <mat-timepicker #timePicker />
+                </div>
             </div>
+            <mat-divider></mat-divider>
+            @if(item.Body.length >= 1){
             <p>{{item.Body}}</p>
+            }
+            @else {
+            <p>(No Description)</p>
+            }
+            <div class="save-button-container">
+                <button mat-stroked-button>Save</button>
+            </div>
         </mat-expansion-panel>
         }
     </mat-accordion>
