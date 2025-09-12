@@ -64,8 +64,7 @@ export class ApiService {
     const params = new HttpParams()
       .set('branchId', uniqueId);
     const url = `${this.REGISTRATION_URL}Softwares`
-    return this.client.get<Software[]>(url, { params: params })
-      .pipe(tap(x => console.log(x.length)));
+    return this.client.get<Software[]>(url, { params: params });
   }
 
   getBranchNotifications(uniqueId: string): Observable<ClientNotification[]> {
