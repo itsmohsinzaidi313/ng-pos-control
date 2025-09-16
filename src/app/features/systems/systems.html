@@ -49,13 +49,10 @@
                 <mat-list-item>
                     <div matListItemTitle>Validity</div>
                     <div matListItemLine>
-                        <input [disabledInteractive]="true" class="date-input" matInput [matDatepicker]="datePicker"
-                            placeholder="{{item.Validity | date: 'dd-MM-yy'}}">
-
-                        <input [disabledInteractive]="true" [disabledInteractive] class="time-input" matInput
-                            [matTimepicker]="timePicker" placeholder="{{item.Validity | date: 'hh:mm aa'}}">
+                        <p>{{item.Validity | date: 'dd-MM-yy hh:mm a'}}</p>
                     </div>
                 </mat-list-item>
+
                 <div style="display: flex; align-items: center;">
                     <mat-datepicker-toggle matIconSuffix [for]="datePicker">
                     </mat-datepicker-toggle>
@@ -65,6 +62,26 @@
                     <mat-timepicker #timePicker />
                 </div>
             </div>
+            <div class="validity-fields">
+                <mat-form-field>
+                    <mat-label>Validity Date</mat-label>
+                    <input 
+                    matInput 
+                    [disabledInteractive]="true"
+                    [matDatepicker]="datePicker"
+                    (click)="datePicker.open()"
+                    placeholder="{{item.Validity | date: 'dd-MM-yy'}}" />
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Validity Time</mat-label>
+                    <input 
+                    matInput
+                    [disabledInteractive]="true" 
+                    [disabledInteractive] matInput 
+                    [matTimepicker]="timePicker"
+                    placeholder="{{item.Validity | date: 'hh:mm aa'}}">
+                </mat-form-field>
+            </div>
             <mat-divider></mat-divider>
             @if(item.Body.length >= 1){
             <p>{{item.Body}}</p>
@@ -72,9 +89,6 @@
             @else {
             <p>(No Description)</p>
             }
-            <div class="save-button-container">
-                <button mat-stroked-button>Save</button>
-            </div>
         </mat-expansion-panel>
         }
     </mat-accordion>
