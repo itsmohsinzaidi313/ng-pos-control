@@ -1,5 +1,5 @@
 .list-item-container {
-  max-width: 45%;
+  max-width: 550px;
 }
 
 .title {
@@ -20,6 +20,7 @@ $list-padding: 200px;
 
 .component {
   padding-left: 24px;
+  padding-bottom: 24px;
 }
 
 .validity-input-field {
@@ -31,25 +32,19 @@ $list-padding: 200px;
 
 .datetime-field-container {
   display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 17px 0px 17px;
 }
 
-.textarea {
-  display: flex;
-  flex-direction: row;
+.datetime-input-field {
+  border: none;
+  background-color: transparent;
+  font: var(--mat-sys-body-medium);
 }
 
 .description-field {
   display: flex;
   flex-direction: column;
-}
-
-.save-button-container {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.validity-fields {
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
 }

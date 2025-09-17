@@ -32,55 +32,24 @@
         <mat-expansion-panel hideToggle expanded="true">
             <mat-expansion-panel-header>
                 <mat-panel-title>{{item.Title}}</mat-panel-title>
-                <mat-icon [ngStyle]="{'color': item.Enabled ? 'green' : 'red'}">{{item.Enabled ? 'check' :
-                    'close'}}</mat-icon>
+                <!-- <mat-icon #enableIcon [ngStyle]="{'color': item.Enabled ? 'green' : 'red'}">{{item.Enabled ? 'check' :
+                    'close'}}</mat-icon> -->
+                <mat-slide-toggle [checked]="item.Enabled" (click)="$event.stopPropagation()"
+                    (change)="onNotificationToggle($event, item)"></mat-slide-toggle>
             </mat-expansion-panel-header>
-            <div>
-                <mat-list-item>
-                    <div matListItemTitle>Enabled</div>
-                    <div matListItemMeta>
-                        <mat-slide-toggle [checked]="item.Enabled" (click)="$event.stopPropagation()"
-                            (change)="onNotificationToggle($event, item)"></mat-slide-toggle>
-                    </div>
-                </mat-list-item>
-            </div>
-            <mat-divider></mat-divider>
             <div class="datetime-field-container">
-                <mat-list-item>
-                    <div matListItemTitle>Validity</div>
-                    <div matListItemLine>
-                        <p>{{item.Validity | date: 'dd-MM-yy hh:mm a'}}</p>
-                    </div>
-                </mat-list-item>
-
-                <div style="display: flex; align-items: center;">
-                    <mat-datepicker-toggle matIconSuffix [for]="datePicker">
-                    </mat-datepicker-toggle>
-                    <mat-datepicker #datePicker />
-
-                    <mat-timepicker-toggle matIconSuffix [for]="timePicker" />
-                    <mat-timepicker #timePicker />
+                <p>Validity</p>
+                <input #datetimeinput class="datetime-input-field" type="datetime-local" value="{{item.Validity}}"
+                    placeholder="{{item.Validity}}">
+                <div>
+                    <button mat-icon-button (click)="onSavePressed($event, datetimeinput, item)">
+                        <mat-icon>save</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="onUndoPressed($event, datetimeinput, item)">
+                        <mat-icon>undo</mat-icon>
+                    </button>
                 </div>
-            </div>
-            <div class="validity-fields">
-                <mat-form-field>
-                    <mat-label>Validity Date</mat-label>
-                    <input 
-                    matInput 
-                    [disabledInteractive]="true"
-                    [matDatepicker]="datePicker"
-                    (click)="datePicker.open()"
-                    placeholder="{{item.Validity | date: 'dd-MM-yy'}}" />
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>Validity Time</mat-label>
-                    <input 
-                    matInput
-                    [disabledInteractive]="true" 
-                    [disabledInteractive] matInput 
-                    [matTimepicker]="timePicker"
-                    placeholder="{{item.Validity | date: 'hh:mm aa'}}">
-                </mat-form-field>
+
             </div>
             <mat-divider></mat-divider>
             @if(item.Body.length >= 1){

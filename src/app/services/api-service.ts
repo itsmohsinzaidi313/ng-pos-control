@@ -95,10 +95,10 @@ export class ApiService {
   }
 
 
-  updateBranchNotification(uniqueId: string, notification: ClientNotification, { notificationId, level, title, body, enabled, validity, deleted, }: { notificationId?: number, level?: number, title?: string, body?: string, enabled?: boolean, validity?: Date, deleted?: boolean }): Observable<boolean> {
+  updateBranchNotification(uniqueId: string, notification: ClientNotification, { level, title, body, enabled, validity, deleted, }: { level?: number, title?: string, body?: string, enabled?: boolean, validity?: Date, deleted?: boolean }): Observable<boolean> {
     const url = `${this.REGISTRATION_URL}BranchNotification`;
     return this.client.put(url, {
-      Id: notificationId ?? notification.NotificationId,
+      Id: notification.NotificationId,
       Level: level ?? notification.Level,
       Title: title ?? notification.Title,
       Message: body ?? notification.Body,

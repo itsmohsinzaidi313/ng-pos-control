@@ -7,12 +7,12 @@ import { Branch as BranchObj } from '../../models/branch';
 import { LoadingSpinner } from "../../components/loading-spinner/loading-spinner";
 import { SearchService } from '../../services/search-service';
 import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatIconModule } from '@angular/material/icon';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { ClientNotification } from '../../models/client-notification';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { NotificationService } from '../../services/notification-service';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatTimepickerModule } from '@angular/material/timepicker';
 import { AsyncPipe, DatePipe, NgStyle } from '@angular/common';
@@ -22,27 +22,22 @@ import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-systems',
-  imports: [MatListModule, LoadingSpinner, MatSlideToggleModule, MatIconModule, MatExpansionModule, MatDatepickerModule, ReactiveFormsModule, MatFormFieldModule, MatTimepickerModule, DatePipe, MatInputModule, MatButtonModule, NgStyle, AsyncPipe],
+  imports: [MatListModule, LoadingSpinner, MatSlideToggleModule, MatIconModule, MatExpansionModule, MatDatepickerModule, ReactiveFormsModule, MatFormFieldModule, MatTimepickerModule, MatInputModule, MatButtonModule, AsyncPipe],
   templateUrl: './systems.html',
   styleUrl: './systems.scss'
 })
 export class Systems {
   title = signal('')
   branch?: BranchObj;
-  // $systems = signal<Software[]>([]);
-  // $filteredSystems = signal<Software[]>([]);
+
   $systems?: Observable<Software[]>;
   $filteredSystems?: Observable<Software[]>;
 
-  // $notifications = signal<ClientNotification[]>([]);
-  // $filteredNotifications = signal<ClientNotification[]>([]);
   $notifications?: Observable<ClientNotification[]>;
   $filteredNotifications?: Observable<ClientNotification[]>;
 
   $loadingSoftwares = signal(true);
   $loadingNotifications = signal(true);
-
-  formController = new FormControl('');
 
   constructor(private searchService: SearchService, private apiService: ApiService, private notificationService: NotificationService) {
     this.searchService.$search.subscribe(search => {
@@ -105,13 +100,49 @@ export class Systems {
       }))
       .subscribe(response1 => {
         if (response1) {
-          const respone2 = this.apiService.getBranchNotifications(this.branch!.UniqueId)
+          this.apiService.getBranchNotifications(this.branch!.UniqueId)
             .pipe(catchError(err => {
               console.log(err);
               return of([]);
-            }));
-          this.$filteredNotifications = respone2;
-          this.$notifications = respone2;
+            })).subscribe(values => {
+              if (values) {
+                const x = values.filter(e => e.NotificationId === notification.NotificationId);
+                if (x) {
+                  const enabled = x.at(0)!.Enabled;
+                  $toggleChanged.source.checked = enabled;
+                }
+              }
+            });
+        }
+      });
+  }
+
+  onUndoPressed($event: MouseEvent, datetimeinput: HTMLInputElement, notification: ClientNotification) {
+    datetimeinput.value = notification.Validity!.toString();
+  }
+
+
+  onSavePressed($event: MouseEvent, datetimeinput: HTMLInputElement, notification: ClientNotification) {
+    this.apiService.updateBranchNotification(this.branch!.UniqueId, notification, { validity: new Date(datetimeinput.value) }).pipe(catchError(err => {
+      console.log(err);
+      this.notificationService.showMessage(err.message);
+      return of(false)
+    }))
+      .subscribe(response1 => {
+        if (response1) {
+          this.apiService.getBranchNotifications(this.branch!.UniqueId)
+            .pipe(catchError(err => {
+              console.log(err);
+              return of([]);
+            })).subscribe(values => {
+              if (values) {
+                const x = values.filter(e => e.NotificationId === notification.NotificationId);
+                if (x) {
+                  this.notificationService.showMessage('Validity Updated', 1000)
+                  datetimeinput.value = x.at(0)!.Validity!.toString();
+                }
+              }
+            });
         }
       });
   }
