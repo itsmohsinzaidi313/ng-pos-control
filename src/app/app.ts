@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
@@ -26,4 +26,10 @@ import { SearchService } from './services/search-service';
 })
 export class App {
   protected readonly title = signal('ng-pos-control');
+
+  constructor(private router: Router) {}
+
+  onLogoutClicked() {
+    this.router.navigateByUrl('login')
+  }
 }

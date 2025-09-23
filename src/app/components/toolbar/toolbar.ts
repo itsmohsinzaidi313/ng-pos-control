@@ -11,8 +11,14 @@ import { SearchBox } from "../search-box/search-box";
   styleUrl: './toolbar.scss'
 })
 export class Toolbar {
-  @Output() menuClicked$: EventEmitter<void> = new EventEmitter();
+  @Output() $menuClicked: EventEmitter<void> = new EventEmitter();
+  @Output() $logoutClicked: EventEmitter<void> = new EventEmitter();
+
   onMenuClicked(): void {
-    this.menuClicked$.emit();
+    this.$menuClicked.emit();
+  }
+
+  onLogoutClicked() {
+    this.$logoutClicked.emit();
   }
 }

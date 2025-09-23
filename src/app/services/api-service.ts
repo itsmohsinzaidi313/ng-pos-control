@@ -32,9 +32,9 @@ export class ApiService {
         switchMap((response, index) => {
           if (response.ok) {
             var body = response.body!;
-            localStorage.setItem('token', body.token);
-            localStorage.setItem('username', hashedUsername);
-            localStorage.setItem('password', hashedPassword);
+            sessionStorage.setItem('token', body.token);
+            sessionStorage.setItem('username', hashedUsername);
+            sessionStorage.setItem('password', hashedPassword);
           }
           return of(response);
         }),
@@ -43,8 +43,8 @@ export class ApiService {
   }
 
   updateToken(): Observable<boolean> {
-    const hashedUsername = localStorage.getItem('username')!;
-    const hashedPassword = localStorage.getItem('password')!;
+    const hashedUsername = sessionStorage.getItem('username')!;
+    const hashedPassword = sessionStorage.getItem('password')!;
     return this.login(hashedUsername, hashedPassword);
   }
 

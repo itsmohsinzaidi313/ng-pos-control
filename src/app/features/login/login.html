@@ -1,4 +1,4 @@
-<div class="size-inherit login-content">
+<div class="login-content">
   <mat-card class="login-card">
     <mat-card-title class="title">
       <h4>LOGIN</h4>
@@ -17,7 +17,9 @@
         <app-loading-spinner />
         }
         @else {
-        <button type="submit" matButton="filled" [disabled]="loginForm.invalid">Submit</button>
+        <div class="login-button">
+          <button type="submit" matButton="filled" [disabled]="loginForm.invalid">Submit</button>
+        </div>
         }
       </form>
     </mat-card-content>

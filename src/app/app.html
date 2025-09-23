@@ -1,4 +1,4 @@
-<app-toolbar (menuClicked$)="drawer.toggle()" />
+<app-toolbar ($menuClicked)="drawer.toggle()" ($logoutClicked)="onLogoutClicked()" />
 <mat-sidenav-container>
   <mat-sidenav #drawer mode="over">
     <app-sidenav-content />

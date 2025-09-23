@@ -2,12 +2,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-items: center;
+  justify-content: center;
+  height: 100%;
 }
+
 .login-card {
-  margin-top: 15%;
   width: 500px;
 }
+
 .title {
   display: flex;
   flex-direction: column;
@@ -16,13 +18,10 @@
 }
 
 .input-fields {
-  width: 100%;
-  height: 100%;
+  width: 490px;
 }
 
-form {
+.login-button {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
+  justify-content: center;
 }

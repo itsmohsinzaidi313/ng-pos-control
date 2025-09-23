@@ -34,5 +34,5 @@ const getHeaders = (): HttpHeaders => {
 const getAuthHeaders = (): HttpHeaders => {
   return new HttpHeaders()
     .set('ContentType', 'application/json')
-    .set('Authorization', `Bearer ${localStorage.getItem('token')}`);
+    .set('Authorization', `Bearer ${sessionStorage.getItem('token')}`);
 }
