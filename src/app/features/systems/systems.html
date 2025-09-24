@@ -8,7 +8,7 @@
         <span class="systems-list-title">SYSTEMS</span>
         @for (item of $filteredSystems | async; track $index) {
         <mat-list-item class="hoverable-list-item ">
-            <div matListItemIcon style="display: flex; align-items: center; padding-right: 20px;">
+            <div matListItemIcon class="clipboard-icon">
                 <button matIconButton (click)="copyToClipboard(item.UniqueId)">
                     <mat-icon>content_copy</mat-icon>
                 </button>
@@ -32,8 +32,6 @@
         <mat-expansion-panel hideToggle expanded="true">
             <mat-expansion-panel-header>
                 <mat-panel-title>{{item.Title}}</mat-panel-title>
-                <!-- <mat-icon #enableIcon [ngStyle]="{'color': item.Enabled ? 'green' : 'red'}">{{item.Enabled ? 'check' :
-                    'close'}}</mat-icon> -->
                 <mat-slide-toggle [checked]="item.Enabled" (click)="$event.stopPropagation()"
                     (change)="onNotificationToggle($event, item)"></mat-slide-toggle>
             </mat-expansion-panel-header>
@@ -53,7 +51,9 @@
             </div>
             <mat-divider></mat-divider>
             @if(item.Body.length >= 1){
-            <p>{{item.Body}}</p>
+            <div class="notification-body">
+                <p>{{item.Body}}</p>
+            </div>
             }
             @else {
             <p>(No Description)</p>

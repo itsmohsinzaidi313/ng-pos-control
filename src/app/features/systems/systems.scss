@@ -1,11 +1,3 @@
-.list-item-container {
-  max-width: 550px;
-}
-
-.title {
-  font: var(--mat-sys-title-large);
-}
-
 $list-padding: 200px;
 
 .systems-list-title {
@@ -16,11 +8,6 @@ $list-padding: 200px;
 .notifications-list-title {
   font: var(--mat-sys-title-medium);
   padding-bottom: $list-padding;
-}
-
-.component {
-  padding-left: 24px;
-  padding-bottom: 24px;
 }
 
 .validity-input-field {
@@ -47,4 +34,14 @@ $list-padding: 200px;
 .description-field {
   display: flex;
   flex-direction: column;
+}
+
+.clipboard-icon {
+  display: flex;
+  align-items: center;
+  padding-right: 20px;
+}
+
+.notification-body {
+  max-width: 550;
 }

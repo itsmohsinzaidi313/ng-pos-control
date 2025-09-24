@@ -14,7 +14,9 @@
           <input formControlName="password" matInput type="password" placeholder="Password" />
         </mat-form-field>
         @if(loading$ | async) {
-        <app-loading-spinner />
+        <div class="login-button">
+          <app-loading-spinner />
+        </div>
         }
         @else {
         <div class="login-button">

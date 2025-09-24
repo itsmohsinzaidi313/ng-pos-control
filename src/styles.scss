@@ -56,3 +56,16 @@ body {
     cursor: pointer;
   }
 }
+
+.component {
+  padding-left: 24px;
+  padding-bottom: 24px;
+}
+
+.list-item-container {
+  max-width: fit-content;
+}
+
+.title {
+  font: var(--mat-sys-title-large);
+}
