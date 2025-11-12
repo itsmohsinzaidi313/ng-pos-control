@@ -8,9 +8,7 @@ export class ToolbarActionService {
   triggerLogoutAction() {
     throw new Error('Method not implemented.');
   }
-  setMenuAction() {
-    throw new Error('Method not implemented.');
-  }
+  
   triggerMenuAction() {
     throw new Error('Method not implemented.');
   }
