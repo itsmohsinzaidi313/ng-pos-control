@@ -1,8 +1,10 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, OnDestroy } from '@angular/core';
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { SearchBox } from "../search-box/search-box";
+import { BehaviorSubject } from 'rxjs';
+import { ToolbarActionService } from '../../services/toolbar-action-service';
 
 @Component({
   selector: 'app-toolbar',
@@ -11,14 +13,20 @@ import { SearchBox } from "../search-box/search-box";
   styleUrl: './toolbar.scss'
 })
 export class Toolbar {
-  @Output() $menuClicked: EventEmitter<void> = new EventEmitter();
-  @Output() $logoutClicked: EventEmitter<void> = new EventEmitter();
+
+  $enableMenuButton: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
+  constructor(private toolbarActionService: ToolbarActionService) {
+  }
+  onAddClicked() {
+    this.toolbarActionService.triggerAddAction();
+  }
 
   onMenuClicked(): void {
-    this.$menuClicked.emit();
+    this.toolbarActionService.triggerMenuAction();
   }
 
   onLogoutClicked() {
-    this.$logoutClicked.emit();
+    this.toolbarActionService.triggerLogoutAction();
   }
 }

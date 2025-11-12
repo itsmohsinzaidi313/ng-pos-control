@@ -9,11 +9,12 @@ import { Router } from '@angular/router';
 import { catchError, Observable, of } from 'rxjs';
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { AsyncPipe } from '@angular/common';
-import { MatSnackBar, MatSnackBarConfig, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
 import { LoadingSpinner } from "../../components/loading-spinner/loading-spinner";
-import * as CryptoJS from 'crypto-js';
-import { SearchService } from '../../services/search-service';
+import CryptoJS from 'crypto-js';
+import { NotificationService } from '../../services/notification-service';
+import { ToolbarActionService } from '../../services/toolbar-action-service';
 
 @Component({
   selector: 'app-login',
@@ -25,9 +26,9 @@ import { SearchService } from '../../services/search-service';
 export class Login {
   loginForm: FormGroup;
   loading$: Observable<boolean> = of(false);
-  private snackbar = inject(MatSnackBar);
-  constructor(private searchService: SearchService, private apiService: ApiService, private fb: FormBuilder, private router: Router,) {
-    this.searchService.disable();
+
+  constructor(private toolbarActionService: ToolbarActionService, private notificationService: NotificationService, private apiService: ApiService, private fb: FormBuilder, private router: Router,) {
+    this.toolbarActionService.disableSearch();
     this.loginForm = this.fb.group({
       username: ['app@ygen', [Validators.required]],
       password: ['321', [Validators.required, Validators.minLength(3)]]
@@ -46,14 +47,14 @@ export class Login {
         this.loading$ = of(false);
         if (err instanceof HttpErrorResponse) {
           let e = err as HttpErrorResponse;
-          this.snackbar.open(e.message, 'Dismiss');
+          this.notificationService.showMessage(e.message);
         }
         return of(null);
       }))
     ).subscribe(e => {
       if (e) {
         this.loading$ = of(false);
-        this.searchService.enable();
+        this.toolbarActionService.enableSearch();
         this.router.navigateByUrl('restaurants');
       }
     });

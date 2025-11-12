@@ -3,10 +3,12 @@ import { Login } from './features/login/login';
 import { Restaurants } from './features/restaurants/restaurants';
 import { Branches } from './features/branches/branches';
 import { Systems } from './features/systems/systems';
+import { AddRestaurant } from './features/restaurants/add-restaurant/add-restaurant';
 
 export const routes: Routes = [
-    { path: '', component: Login },
-    { path: 'restaurants', component: Restaurants },
-    { path: 'branches/:id', component: Branches },
-    { path: 'systems', component: Systems }
+  { path: '', component: Login },
+  { path: 'restaurants', component: Restaurants },
+  { path: 'branches/:id', component: Branches },
+  { path: 'systems', component: Systems },
+  { path: 'add-restaurant', component: AddRestaurant },
 ];

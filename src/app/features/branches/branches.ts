@@ -8,7 +8,7 @@ import { catchError, map, Observable, of, switchMap, throwError } from 'rxjs';
 import { Branch } from '../../models/branch';
 import { LoadingSpinner } from "../../components/loading-spinner/loading-spinner";
 import { HttpErrorResponse } from '@angular/common/http';
-import { SearchService } from '../../services/search-service';
+import { ToolbarActionService } from '../../services/toolbar-action-service';
 
 @Component({
   selector: 'app-branches',
@@ -20,8 +20,8 @@ export class Branches {
   restaurant?: string;
   branches$?: Observable<Branch[] | null>;
   filteredBranches$?: Observable<Branch[] | null>;
-  constructor(private searchService: SearchService, private apiService: ApiService, private route: ActivatedRoute) {
-    this.searchService.$search.subscribe(search =>
+  constructor(private toolbarActionService: ToolbarActionService, private apiService: ApiService, private route: ActivatedRoute) {
+    this.toolbarActionService.$search.subscribe(search =>
       this.filteredBranches$ = this.branches$?.pipe(map(b => {
         return (b ?? []).filter(val => val.Name.toLowerCase().includes(search.toLowerCase()));
       }))

@@ -10,7 +10,7 @@ import { RouterLink } from '@angular/router';
 import { LoadingSpinner } from "../../components/loading-spinner/loading-spinner";
 import { MatInputModule } from "@angular/material/input";
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { SearchService } from '../../services/search-service';
+import { ToolbarActionService } from '../../services/toolbar-action-service';
 
 @Component({
   selector: 'app-restaurants',
@@ -23,8 +23,8 @@ export class Restaurants {
   restaurants$?: Observable<Restaurant[]>;
   filteredItems$?: Observable<Restaurant[]>;
 
-  constructor(private searchService: SearchService, private apiService: ApiService) {
-    this.searchService.$search.subscribe((search) => {
+  constructor(private toolbarActionService: ToolbarActionService, private apiService: ApiService) {
+    this.toolbarActionService.$search.subscribe((search) => {
       this.filteredItems$ = this.restaurants$?.pipe(map((r) => {
         return r.filter((value2, index) => {
           return value2.Name.toLowerCase().includes(search.toLowerCase())

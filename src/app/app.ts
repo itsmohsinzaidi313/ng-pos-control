@@ -7,7 +7,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { SidenavContent } from "./components/sidenav-content/sidenav-content";
 import { Toolbar } from "./components/toolbar/toolbar";
-import { SearchService } from './services/search-service';
 
 @Component({
   selector: 'app-root',

@@ -13,7 +13,7 @@ import { validate } from 'uuid';
 })
 export class ApiService {
   private readonly DEVICEID = '321661E0-9874-11EE-BBE0-9F04E8D08641';
-  private readonly BASE_URL = 'http://localhost:5004/api/v2/';
+  private readonly BASE_URL = 'http://localhost:5002/api/v2/';
   private readonly SECURITY_URL = `${this.BASE_URL}Security/`;
   private readonly REGISTRATION_URL = `${this.BASE_URL}Registration/`;
 

@@ -5,7 +5,6 @@ import { MatListModule } from "@angular/material/list";
 import { Software } from '../../models/software';
 import { Branch as BranchObj } from '../../models/branch';
 import { LoadingSpinner } from "../../components/loading-spinner/loading-spinner";
-import { SearchService } from '../../services/search-service';
 import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { ClientNotification } from '../../models/client-notification';
@@ -18,6 +17,7 @@ import { MatTimepickerModule } from '@angular/material/timepicker';
 import { AsyncPipe, DatePipe, NgStyle } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { ToolbarActionService } from '../../services/toolbar-action-service';
 
 
 @Component({
@@ -39,8 +39,8 @@ export class Systems {
   $loadingSoftwares = signal(true);
   $loadingNotifications = signal(true);
 
-  constructor(private searchService: SearchService, private apiService: ApiService, private notificationService: NotificationService) {
-    this.searchService.$search.subscribe(search => {
+  constructor(private toolbarActionService: ToolbarActionService, private apiService: ApiService, private notificationService: NotificationService) {
+    this.toolbarActionService.$search.subscribe(search => {
       this.$filteredSystems = this.$systems?.pipe(
         map(list => list.filter(val => val.UniqueId.toLowerCase().includes(search.toLowerCase())))
       );
