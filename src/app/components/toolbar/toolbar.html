@@ -1,7 +1,7 @@
 <mat-toolbar class="toolbar">
   <div class="sidenav-items">
     <div class="sidenav-title">
-      <button type="button" matButton (click)="onMenuClicked()" [disabled]="$enableMenuButton">
+      <button type="button" matButton (click)="onMenuClicked()" [disabled]="!($enableMenuButton | async)">
         <mat-icon matListItemIcon class="icon-title">menu</mat-icon>
         <div matListItemTitle class="icon-title">POS Control</div>
       </button>
@@ -9,11 +9,13 @@
     <app-search-box />
   </div>
   <div>
-    <button type="button" mat-icon-button (click)="onAddClicked()" [disabled]="$enableMenuButton">
-      <mat-icon class="icon-title">add</mat-icon>
-    </button>
-    <button  type="button" mat-icon-button (click)="onLogoutClicked()">
-      <mat-icon class="icon-title">logout</mat-icon>
-    </button>
+    @if($enableMenuButton | async) {
+      <button type="button" mat-icon-button (click)="onAddClicked()">
+        <mat-icon class="icon-title">add</mat-icon>
+      </button>
+      <button type="button" mat-icon-button (click)="onLogoutClicked()">
+        <mat-icon class="icon-title">logout</mat-icon>
+      </button>
+    }
   </div>
 </mat-toolbar>

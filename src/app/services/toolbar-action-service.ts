@@ -8,6 +8,9 @@ export class ToolbarActionService {
   triggerLogoutAction() {
     throw new Error('Method not implemented.');
   }
+  setMenuAction() {
+    throw new Error('Method not implemented.');
+  }
   triggerMenuAction() {
     throw new Error('Method not implemented.');
   }
@@ -38,7 +41,7 @@ export class ToolbarActionService {
   disableSearch(): void {
     this.searchEnabled.next(false);
   }
-  
+
   setSearch(value: string): void {
     this.search.next(value);
   }

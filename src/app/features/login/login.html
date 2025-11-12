@@ -13,7 +13,7 @@
           <mat-label> Password </mat-label>
           <input formControlName="password" matInput type="password" placeholder="Password" />
         </mat-form-field>
-        @if(loading$ | async) {
+        @if($loading | async) {
         <div class="login-button">
           <app-loading-spinner />
         </div>

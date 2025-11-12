@@ -25,10 +25,11 @@ import { ToolbarActionService } from '../../services/toolbar-action-service';
 
 export class Login {
   loginForm: FormGroup;
-  loading$: Observable<boolean> = of(false);
+  $loading: Observable<boolean> = of(false);
 
   constructor(private toolbarActionService: ToolbarActionService, private notificationService: NotificationService, private apiService: ApiService, private fb: FormBuilder, private router: Router,) {
     this.toolbarActionService.disableSearch();
+    this.toolbarActionService.disableMenuButton();
     this.loginForm = this.fb.group({
       username: ['app@ygen', [Validators.required]],
       password: ['321', [Validators.required, Validators.minLength(3)]]
@@ -38,13 +39,13 @@ export class Login {
   onSubmited(): void {
     const username = this.loginForm.value.username;
     const password = this.loginForm.value.password;
-    this.loading$ = of(true);
+    this.$loading = of(true);
 
     const cryptUsername = CryptoJS.MD5(username).toString();
     const cryptPassword = CryptoJS.MD5(password).toString();
     this.apiService.login(cryptUsername, cryptPassword).pipe(
       catchError((err => {
-        this.loading$ = of(false);
+        this.$loading = of(false);
         if (err instanceof HttpErrorResponse) {
           let e = err as HttpErrorResponse;
           this.notificationService.showMessage(e.message);
@@ -53,8 +54,9 @@ export class Login {
       }))
     ).subscribe(e => {
       if (e) {
-        this.loading$ = of(false);
+        this.$loading = of(false);
         this.toolbarActionService.enableSearch();
+        this.toolbarActionService.enableMenuButton();
         this.router.navigateByUrl('restaurants');
       }
     });
