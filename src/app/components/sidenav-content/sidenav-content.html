@@ -1,7 +1,6 @@
 <div class="sidenav-content">
-  <h2>Restaurants</h2>
-  <mat-list-item>
-    <div matListItemTitle>Title</div>
-    <div matListItemLine>Subtitle</div>
-  </mat-list-item>
+  <h3>Menu</h3>
+  @for (item of navigationItems ; track $index){
+  <app-sidenav-tile [title]="item.title" [subtitle]="item.subtitle" (menuClicked$)="onNavItemClicked($index)" />
+  }
 </div>

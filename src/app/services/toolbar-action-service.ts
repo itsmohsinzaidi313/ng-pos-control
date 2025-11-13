@@ -1,20 +1,30 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
+import { StorageService } from './storage-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ToolbarActionService {
+
+  constructor(private storageService: StorageService) {
+    this.isLoggedIn.next(this.storageService.getLoginStatus());
+    this.menuButtonEnabled.next(this.storageService.getLoginStatus());
+    this.searchEnabled.next(this.storageService.getSearchEnabled());
+  }
   triggerLogoutAction() {
     throw new Error('Method not implemented.');
   }
-  
+
   triggerMenuAction() {
     throw new Error('Method not implemented.');
   }
   triggerAddAction() {
     throw new Error('Method not implemented.');
   }
+  private isLoggedIn = new BehaviorSubject<boolean>(false);
+  $isLoggedIn = this.isLoggedIn.asObservable();
+
   private menuButtonEnabled = new BehaviorSubject<boolean>(false);
   $menuButtonEnabled = this.menuButtonEnabled.asObservable();
 
@@ -25,19 +35,27 @@ export class ToolbarActionService {
   $search = this.search.asObservable();
 
   enableMenuButton(): void {
-    this.menuButtonEnabled.next(true);
+    let value = true;
+    this.menuButtonEnabled.next(value);
+    this.storageService.setLoginStatus(value);
   }
 
   disableMenuButton(): void {
-    this.menuButtonEnabled.next(false);
+    let value = false;
+    this.menuButtonEnabled.next(value);
+    this.storageService.setLoginStatus(value);
   }
 
   enableSearch(): void {
-    this.searchEnabled.next(true);
+    let value = true;
+    this.searchEnabled.next(value);
+    this.storageService.setSearchEnabled(value);
   }
 
   disableSearch(): void {
-    this.searchEnabled.next(false);
+    let value = false;
+    this.searchEnabled.next(value);
+    this.storageService.setSearchEnabled(value);
   }
 
   setSearch(value: string): void {
