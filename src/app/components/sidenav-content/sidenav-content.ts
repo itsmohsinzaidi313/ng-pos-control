@@ -27,15 +27,12 @@ export class SidenavContent {
     this.menuClicked$.emit(this.drawer);
     switch (index) {
       case 0:
-        console.log('Restaurants clicked');
         this.router.navigate(['/restaurants']);
         break;
       case 1:
-        console.log('Notifications clicked');
         this.router.navigate(['/notifications']);
         break;
       case 2:
-        console.log('Websites clicked');
         this.router.navigate(['/websites']);
         break;
       default:
